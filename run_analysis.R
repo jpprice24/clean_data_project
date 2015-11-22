@@ -1,4 +1,7 @@
 # Getting and Cleaning Data - Course Project
+# Author: John Price
+# Date: November 22, 2015
+
 require(dplyr)
 
 featuresloc <- "_data/UCI HAR Dataset/features.txt"
@@ -41,3 +44,33 @@ train <- cbind(tmpy, tmpsubject, tmpX)
 # Add activity label
 train <- merge(activity, train)
 
+################################################################################
+## Create test data frame
+################################################################################
+
+# Set file locations
+subjectloc <- "_data/UCI HAR Dataset/test/subject_test.txt"
+Xloc <- "_data/UCI HAR Dataset/test/X_test.txt"
+yloc <- "_data/UCI HAR Dataset/test/y_test.txt"
+
+# Read in subject IDs
+tmpsubject <- read.table(subjectloc,
+                         col.names = "subject_id")
+
+# Read in feature variables, set column names based on features
+tmpX <- read.table(Xloc,
+                   col.names = features$feature_label)
+
+# Only use columns pertaining to a mean or standard deviation
+# of a feature
+tmpX <- tmpX[, grep("mean\\(\\)|std\\(\\)", features$feature_label)]
+
+# Read in activities
+tmpy <- read.table(yloc,
+                   col.names = "activity_id")
+
+# Combine activity, subject, and features
+test <- cbind(tmpy, tmpsubject, tmpX)
+
+# Add activity label
+test <- merge(activity, train)
