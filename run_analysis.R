@@ -99,4 +99,5 @@ summary_data <- all_data %>%
   group_by(subject_id, activity_label) %>%
   summarize_each(funs(mean))
 
+# Write table to output text file
 write.table(summary_data, file = "summary_data.txt", row.names = FALSE)
